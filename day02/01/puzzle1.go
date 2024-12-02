@@ -10,6 +10,7 @@ import (
 
 func main() {
 	file, err := os.Open("../input.txt")
+	//file, err := os.Open("../example.txt")
 	if err != nil {
 		panic(err)
 	}
@@ -28,7 +29,8 @@ func main() {
 		
 		safeLine := true
 		if bufTrend < -3 || bufTrend > 3 {
-			break
+			// no need to continue if the first trend isn't right, right ?
+			continue
 		}
 
 		for index := 2; index < len(lineSplit); index++ {
@@ -38,7 +40,7 @@ func main() {
 
 			// if curTrend * bufTrend is negative, it means -A * B or A * -B
 			// so they don't have the same trend
-			if (curTrend < -3 || curTrend > 3) &&
+			if (curTrend < -3 || curTrend > 3) ||
 				 curTrend*bufTrend <= 0 {
 				safeLine = false
 				break
