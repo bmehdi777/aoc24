@@ -25,29 +25,29 @@ func main() {
 		firstElem, _ := strconv.Atoi(lineSplit[0])
 		secElem, _ := strconv.Atoi(lineSplit[1])
 		bufTrend := firstElem - secElem
-
-		//if len(lineSplit) == 2 && bufTrend >= -3 && bufTrend <= 3 {
-		//	safeReport += 1
-		//	continue
-		//}
-
+		
 		safeLine := true
+		if bufTrend < -3 || bufTrend > 3 {
+			break
+		}
+
 		for index := 2; index < len(lineSplit); index++ {
-			curElem, _ := strconv.Atoi(lineSplit[index])
 			prevElem, _ := strconv.Atoi(lineSplit[index-1])
+			curElem, _ := strconv.Atoi(lineSplit[index])
 			curTrend := prevElem - curElem
 
-
-			if curTrend < -3 && curTrend > 3  || curTrend * bufTrend <= 0 || curTrend == 0 {
+			// if curTrend * bufTrend is negative, it means -A * B or A * -B
+			// so they don't have the same trend
+			if (curTrend < -3 || curTrend > 3) &&
+				 curTrend*bufTrend <= 0 {
 				safeLine = false
 				break
 			}
 		}
 
-		if (safeLine) {
+		if safeLine {
 			safeReport += 1
 		}
-
 	}
 	fmt.Println("safe report : ", safeReport)
 
