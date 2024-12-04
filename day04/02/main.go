@@ -57,6 +57,7 @@ func main() {
 					lookupPosY = posLine + (iLetter * dir[1])
 					lookupPosX = posChar + (iLetter * dir[0])
 				}
+
 				if word == wordSearched {
 					res += 1
 				}
