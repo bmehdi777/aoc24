@@ -10,8 +10,8 @@ import (
 )
 
 func main() {
-	//file, err := os.Open("../input.txt")
-	file, err := os.Open("../example.txt")
+	file, err := os.Open("../input.txt")
+	//file, err := os.Open("../example.txt")
 	if err != nil {
 		panic(err)
 	}
@@ -35,6 +35,7 @@ func main() {
 	}
 
 	dict := make(map[string][]string)
+	// value : [printAfterValue]
 
 	for _, rules := range firstSection {
 		numbers := strings.Split(rules, "|")
@@ -45,35 +46,57 @@ func main() {
 			dict[numbers[0]] = append(dict[numbers[0]], numbers[1])
 		}
 	}
-
-	resRow := make([]string, 0)
 	res := 0
 
+	sortedRow := 0
 	for _, updatesRow := range secondSection {
 		updates := strings.Split(updatesRow, ",")
-		validRow := validRow(updates, dict)
 
-		if validRow {
-			resRow = append(resRow, updatesRow)
-			num, _ := strconv.Atoi(updates[len(updates)/2])
-			res += num
-		} else {
+		validRow := isValidRow(updates, dict)
 
+		if !validRow {
+
+			for i := 0; i < len(updates); i++ {
+				for j := 0; j < len(updates); j++ {
+					valI := updates[i]
+					valJ := updates[j]
+					if i > j && slices.Contains(dict[valI], valJ) {
+						nextI := i - 1
+						if nextI < 0 {
+							nextI = 0
+						}
+						updates[i] = valJ
+						updates[j] = valI
+
+						i = 0
+						j = 0
+					} else if i < j && !slices.Contains(dict[valI], valJ) {
+						nextI := i + 1
+						if nextI > len(updates)-1 {
+							nextI = len(updates) - 1
+						}
+
+						updates[i] = valJ
+						updates[j] = valI
+
+						i = 0
+						j = 0
+					}
+				}
+			}
+			numSorted, _ := strconv.Atoi(updates[len(updates)/2])
+			sortedRow += numSorted
 		}
+
+		num, _ := strconv.Atoi(updates[len(updates)/2])
+		res += num
 	}
 
 	fmt.Println("res : ", res)
+	fmt.Println("res2: ", sortedRow)
 }
 
-func sortRow(updates []string, dict map[string][]string) []string {
-	for i, valI := range updates {
-
-	}
-
-	return nil
-}
-
-func validRow(updates []string, dict map[string][]string) bool {
+func isValidRow(updates []string, dict map[string][]string) bool {
 	validRow := true
 	for i, valI := range updates {
 		for j, valJ := range updates {
@@ -87,14 +110,8 @@ func validRow(updates []string, dict map[string][]string) bool {
 		}
 
 		if !validRow {
-
 			break
 		}
 	}
-
 	return validRow
-}
-
-func moveStr(array []string, srcIndex int, dstIndex int) []string {
-	value := array[srcIndex]
 }
