@@ -8,8 +8,8 @@ import (
 )
 
 func main() {
-	file, err := os.Open("../input.txt")
-	//file, err := os.Open("../example.txt")
+	//file, err := os.Open("../input.txt")
+	file, err := os.Open("../example.txt")
 	if err != nil {
 		panic(err)
 	}
@@ -64,6 +64,12 @@ firstLoop:
 						tmpRow[lookupX] = 'X'
 						guardMap[lookupY] = string(tmpRow)
 						numTravel += 1
+					} else if guardMap[lookupY][lookupX] == 'X' {
+						// search in a direction if we have another X
+
+						for _, XDir := range directionPos {
+							
+						}
 					}
 					fmt.Println("Dir : ", direction[lookupChar])
 					lookupX += direction[lookupChar][0]
