@@ -15,7 +15,7 @@ func main() {
 	}
 	defer file.Close()
 
-	trackNode := make([]Node, 0)
+	trackNode := make([]*Node, 0)
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -25,12 +25,25 @@ func main() {
 		numbers := strings.Split(lineSplit[1], " ")
 
 		num, _ := strconv.Atoi(numbers[0])
-		head := Node{Value: num}
+		head := &Node{Value: num}
 
 		for i := 1; i < len(numbers); i++ {
 			num, _ = strconv.Atoi(numbers[i])
-			head.AddNode = &Node{Value: head.Value + num}
-			head.MulNode = &Node{Value: head.Value * num}
+			if head.Value + num <= finalRes {
+				head.AddNode = &Node{Value: head.Value + num}
+			}
+			if head.Value * num <= finalRes {
+				head.MulNode = &Node{Value: head.Value * num}
+			}
+
+			if head.MulNode == nil && head.AddNode == nil  {
+				if  head.Value != finalRes {
+					break
+				}
+				break
+			} else {
+
+			}
 			
 		}
 	}
