@@ -35,16 +35,8 @@ func main() {
 			if head.Value * num <= finalRes {
 				head.MulNode = &Node{Value: head.Value * num}
 			}
+			// should use recursive 
 
-			if head.MulNode == nil && head.AddNode == nil  {
-				if  head.Value != finalRes {
-					break
-				}
-				break
-			} else {
-
-			}
-			
 		}
 	}
 
